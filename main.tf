@@ -51,7 +51,7 @@ locals {
   domain_name         = var.domain_name == "" ? local.default_domain_name : var.domain_name
 
   base_tags = {
-    ServiceProvider = "Rackspace"
+    ServiceProvider = "EnergyOne"
     Environment     = var.environment
   }
 
