@@ -6,7 +6,7 @@ variable "az_count" {
 
 variable "build_flow_logs" {
   description = "Whether or not to build flow log components in Cloudwatch Logs"
-  default     = true
+  default     = false
   type        = bool
 }
 
@@ -19,25 +19,25 @@ variable "build_igw" {
 variable "build_nat_gateways" {
   description = "Whether or not to build a NAT gateway per AZ.  if `build_igw` is set to false, this value is ignored."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "build_s3_flow_logs" {
   description = "Whether or not to build flow log components in s3"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "build_vpn" {
   description = "Whether or not to build a VPN gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "cidr_range" {
   description = "CIDR range for the VPC"
   type        = string
-  default     = "192.168.249.0/24"
+  default     = "172.18.0.0/19"
 }
 
 variable "cloudwatch_flowlog_retention" {
@@ -49,7 +49,7 @@ variable "cloudwatch_flowlog_retention" {
 variable "custom_azs" {
   description = "A list of AZs that VPC resources will reside in"
   type        = list(string)
-  default     = ["ap-southeast-2a","ap-southest-2c"]
+  default     = []
 }
 
 variable "default_tenancy" {
@@ -134,9 +134,9 @@ variable "private_cidr_ranges" {
   type        = list(string)
 
   default = [
-    "192.168.251.0/27",
-    "192.168.251.32/27",
-    "192.168.251.64/27",
+    "172.18.16.0/22",
+    "172.18.20.0/22",
+    "172.18.24.0/22",
   ]
 }
 
@@ -174,9 +174,9 @@ variable "public_cidr_ranges" {
   type        = list(string)
 
   default = [
-    "192.168.251.128/27",
-    "192.168.251.160/27",
-    "192.168.251.192/27",
+    "172.18.0.0/22",
+    "172.18.4.0/22",
+    "172.18.8.0/22",
   ]
 }
 
@@ -230,8 +230,5 @@ variable "spoke_vpc" {
 variable "tags" {
   description = "Optional tags to be applied on top of the base tags on all resources"
   type        = map(string)
-  default     = {
-    "Description" = "EnergyOne VPC created by terraform"
-    "Owner" = "Ops"
-  }
+  default     = {}
 }
