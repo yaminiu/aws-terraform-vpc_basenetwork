@@ -238,15 +238,15 @@ resource "aws_route_table" "public_route_table" {
 }
 
 resource "aws_route_table" "private_route_table" {
-#  count = var.az_count
-   count = 1
+  count = var.az_count
+
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
     local.tags,
-#    local.single_nat_tag[var.single_nat],
+    local.single_nat_tag[var.single_nat],
     {
-      Name = format("%s-PrivateRouteTable%d", var.name)
+      Name = format("%s-PrivateRouteTable%d", var.name, count.index + 1)
     },
   )
 }
@@ -260,12 +260,11 @@ resource "aws_route" "public_routes" {
 }
 
 resource "aws_route" "private_routes" {
-# count = var.build_nat_gateways && var.build_igw ? var.az_count : 0
-  count = 1
+  count = var.build_nat_gateways && var.build_igw ? var.az_count : 0
 
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw[0].id
-  route_table_id         = aws_route_table.private_route_table[0].id
+  nat_gateway_id         = element(aws_nat_gateway.nat.*.id, count.index)
+  route_table_id         = element(aws_route_table.private_route_table.*.id, count.index)
 }
 
 resource "aws_route_table_association" "public_route_association" {
@@ -276,7 +275,7 @@ resource "aws_route_table_association" "public_route_association" {
 }
 
 resource "aws_route_table_association" "private_route_association" {
-  count =  var.private_subnets_per_az
+  count = var.az_count * var.private_subnets_per_az
 
   route_table_id = element(aws_route_table.private_route_table.*.id, count.index)
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
