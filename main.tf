@@ -246,7 +246,7 @@ resource "aws_route_table" "private_route_table" {
     local.tags,
 #    local.single_nat_tag[var.single_nat],
     {
-      Name = format("%s-PrivateRouteTable%d", var.name)
+      Name = format("%s-PrivateRouteTable", var.name)
     },
   )
 }
