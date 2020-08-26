@@ -235,3 +235,13 @@ variable "tags" {
     "Owner" = "Ops"
   }
 }
+
+variable "vpn_route_destination" {
+  description = "Destinations route via VPN gateway"
+  type        = list
+  default = [
+    "192.168.0.0/16",
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+  ]
+}

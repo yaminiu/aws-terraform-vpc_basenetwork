@@ -268,6 +268,15 @@ resource "aws_route" "private_routes" {
   route_table_id         = aws_route_table.private_route_table[0].id
 }
 
+
+resource "aws_route" "vpn_routes" {
+# count = var.build_nat_gateways && var.build_igw ? var.az_count : 0
+  count = length(var.vpn_route_destination)
+  destination_cidr_block = element(var.vpn_route_destination, count.index)
+  gateway_id             = aws_vpn_gateway.vpn_gateway[0].id
+  route_table_id         = aws_route_table.private_route_table[0].id
+}
+
 resource "aws_route_table_association" "public_route_association" {
   count = var.build_igw ? var.az_count * var.public_subnets_per_az : 0
 
@@ -276,9 +285,8 @@ resource "aws_route_table_association" "public_route_association" {
 }
 
 resource "aws_route_table_association" "private_route_association" {
-  count =  var.private_subnets_per_az
-
-  route_table_id = element(aws_route_table.private_route_table.*.id, count.index)
+  count =  var.az_count
+  route_table_id = aws_route_table.private_route_table[0].id
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
 }
 
