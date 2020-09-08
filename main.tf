@@ -37,7 +37,7 @@
  * - `custom_tags` -> `tags`
  * - `vpc_name` -> `name`
  */
-
+/*
 terraform {
   required_version = ">= 0.12"
 
@@ -45,9 +45,9 @@ terraform {
     aws = ">= 2.7.0"
   }
 }
-
+*/
 locals {
-  default_domain_name = data.aws_region.current.name == "us-east-1" ? "ec2.internal" : format("%s.compute.internal", data.aws_region.current.name)
+  default_domain_name = data.aws_region.current.name == "ap-southeast-2" ? "ec2.internal" : format("%s.compute.internal", data.aws_region.current.name)
   domain_name         = var.domain_name == "" ? local.default_domain_name : var.domain_name
 
   base_tags = {
@@ -285,7 +285,7 @@ resource "aws_route_table_association" "public_route_association" {
 }
 
 resource "aws_route_table_association" "private_route_association" {
-  count =  var.az_count
+  count =  var.az_count * var.private_subnets_per_az
   route_table_id = aws_route_table.private_route_table[0].id
   subnet_id      = element(aws_subnet.private_subnet.*.id, count.index)
 }

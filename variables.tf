@@ -1,7 +1,7 @@
 variable "az_count" {
   description = "Number of AZs to utilize for the subnets"
   type        = number
-  default     = 2
+  default     = 3
 }
 
 variable "build_flow_logs" {
@@ -49,7 +49,7 @@ variable "cloudwatch_flowlog_retention" {
 variable "custom_azs" {
   description = "A list of AZs that VPC resources will reside in"
   type        = list(string)
-  default     = ["ap-southeast-2a","ap-southest-2c"]
+  default     = ["ap-southeast-2a","ap-southest-2b","ap-southest-2c"]
 }
 
 variable "default_tenancy" {
