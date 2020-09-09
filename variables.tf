@@ -49,7 +49,7 @@ variable "cloudwatch_flowlog_retention" {
 variable "custom_azs" {
   description = "A list of AZs that VPC resources will reside in"
   type        = list(string)
-  default     = ["ap-southeast-2a","ap-southest-2b","ap-southest-2c"]
+  default     = ["ap-southeast-2a","ap-southeast-2b","ap-southeast-2c"]
 }
 
 variable "default_tenancy" {
