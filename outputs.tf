@@ -56,3 +56,8 @@ output "vpn_gateway" {
   description = "The ID of the VPN gateway if one was created"
   value       = join(" ", aws_vpn_gateway.vpn_gateway.*.id)
 }
+
+output "subnet_cidr_blocks" {
+  description = "The CIDR block of the VPC"
+  value = [aws_vpc.cidr_block]
+}
